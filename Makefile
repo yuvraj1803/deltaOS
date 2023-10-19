@@ -10,11 +10,13 @@ OBJDUMP = 	$(TOOLCHAIN)objdump
 CFLAGS = -g -ffreestanding -nostdlib -nostartfiles -Wall -I$(INC) -I$(LIB)
 ASMFLAGS = -g -I$(INC)
 
+OBJ += ./build/boot/boot.S.o
+OBJ += ./build/kernel/main.o
 
 .PHONY: all
 all: kernel8.img
 
-./build/core/%.o: ./core/%.c
+./build/kernel/%.o: ./kernel/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/mm/%.o: ./mm/%.c
@@ -23,7 +25,7 @@ all: kernel8.img
 ./build/boot/%.S.o: ./boot/%.S
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
-./build/core/%.S.o : ./core/%.S
+./build/kernel/%.S.o : ./kernel/%.S
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
 ./build/mm/%.S.o: ./mm/%.S
@@ -49,12 +51,12 @@ kernel8.img : $(OBJ)
 run: kernel8.img qemu
 
 .PHONY: debug
-debug:	sdcard kernel8.img 
-	qemu-system-aarch64 -M raspi3b -nographic -serial null -serial mon:stdio -m 1024 -kernel ./kernel8.img,if=sd,format=raw -s -S
+debug: kernel8.img 
+	qemu-system-aarch64 -M raspi3b -nographic -serial null -serial mon:stdio -m 1024 -kernel ./kernel8.img -s -S
 
 .PHONY: qemu
 qemu: 
-	qemu-system-aarch64 -M raspi3b -nographic -serial null -serial mon:stdio -m 1024 -kernel ./kernel8.img,if=sd,format=raw
+	qemu-system-aarch64 -M raspi3b -nographic -serial null -serial mon:stdio -m 1024 -kernel ./kernel8.img
 
 .PHONY: objdump
 objdump: kernel8.img
