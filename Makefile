@@ -12,6 +12,13 @@ ASMFLAGS = -g -I$(INC)
 
 OBJ += ./build/boot/boot.S.o
 OBJ += ./build/kernel/main.o
+OBJ += ./build/drivers/uart.o
+OBJ += ./build/mm/mm.o
+OBJ += ./build/mm/mm.S.o
+OBJ += ./build/lib/memory.o
+OBJ += ./build/lib/stdio.o
+OBJ += ./build/lib/stdlib.o
+OBJ += ./build/lib/string.o
 
 .PHONY: all
 all: kernel8.img
