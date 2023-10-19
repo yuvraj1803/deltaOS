@@ -7,7 +7,7 @@ LD = 		$(TOOLCHAIN)ld
 OBJCOPY = 	$(TOOLCHAIN)objcopy
 OBJDUMP = 	$(TOOLCHAIN)objdump
 
-CFLAGS = -g -ffreestanding -nostdlib -nostartfiles -Wall -I$(INC) -I$(LIB)
+CFLAGS = -g -ffreestanding -nostdlib -nostartfiles -Wall -I$(INC) -I$(LIB) -mgeneral-regs-only
 ASMFLAGS = -g -I$(INC)
 
 OBJ += ./build/boot/boot.S.o
