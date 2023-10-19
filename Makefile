@@ -12,6 +12,7 @@ ASMFLAGS = -g -I$(INC)
 
 OBJ += ./build/boot/boot.S.o
 OBJ += ./build/kernel/main.o
+OBJ += ./build/kernel/misc.S.o
 OBJ += ./build/drivers/uart.o
 OBJ += ./build/mm/mm.o
 OBJ += ./build/mm/mm.S.o
