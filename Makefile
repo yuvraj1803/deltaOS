@@ -14,6 +14,7 @@ OBJ += ./build/boot/boot.S.o
 OBJ += ./build/kernel/main.o
 OBJ += ./build/kernel/misc.S.o
 OBJ += ./build/drivers/uart.o
+OBJ += ./build/drivers/timer.o
 OBJ += ./build/mm/mm.o
 OBJ += ./build/mm/mm.S.o
 OBJ += ./build/lib/memory.o
