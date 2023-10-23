@@ -1,5 +1,6 @@
 #include "drivers/timer.h"
 #include "mm/mm.h"
+#include "stdio.h"
 
 const uint32_t timer_interval = (1000000/1000); // timer runs at 1MHz
 // (1000000/1000) is number of cycles in 1 ms)
