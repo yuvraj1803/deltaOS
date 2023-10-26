@@ -30,8 +30,8 @@
     add x21, sp, #8*34
     .endif
 
-    mrs x22, elr_el2
-    mrs x23, spsr_el2
+    mrs x22, elr_el1
+    mrs x23, spsr_el1
     stp x30, x21, [sp, #16 * 15]
     stp x22, x23, [sp, #16 * 16]
 .endm
@@ -44,8 +44,8 @@
     msr sp_el0, x21
     .endif
 
-    msr elr_el2, x22
-    msr spsr_el2, x23
+    msr elr_el1, x22
+    msr spsr_el1, x23
     ldp x0, x1, [sp, #16 * 0]
     ldp x2, x3, [sp, #16 * 1]
     ldp x4, x5, [sp, #16 * 2]
