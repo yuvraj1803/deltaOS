@@ -86,9 +86,14 @@
 	kernel_exit \el
 .endm
 
-.macro handle_sync_interrupt el
+.macro handle_sync_interrupt el // This interrupt will always come from EL0, so there is no point of having 'el' arg.
+                                // I have added it just to make it more readable.
 	kernel_entry \el
-	// a lot of work to do.
+    mrs x0, esr_el1
+    mrs x1, elr_el1
+    mrs x2, far_el1
+    mov x3, x8      // supervisor call (svc) number.
+	bl handle_sync
 	kernel_exit \el
 .endm
 
