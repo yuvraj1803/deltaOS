@@ -2,6 +2,7 @@
 #define __PROCESS_H__
 
 #include <stdint.h>
+#include "mm/paging.h"
 
 #define PROCESS_RUNNING 0
 #define PROCESS_WAITING 1
@@ -33,7 +34,8 @@ struct process{
     uint8_t pid;
 
     struct process_info info;
-
+    struct virtual_address_space vaddr_space;
+    
     void (*process_function)();
 
 };
