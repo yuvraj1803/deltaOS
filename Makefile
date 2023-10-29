@@ -17,6 +17,7 @@ OBJ += ./build/kernel/irq.S.o
 OBJ += ./build/kernel/irq.o
 OBJ += ./build/kernel/exceptions.S.o
 OBJ += ./build/kernel/sync.o
+OBJ += ./build/kernel/process.o
 OBJ += ./build/drivers/uart.o
 OBJ += ./build/drivers/timer.o
 OBJ += ./build/mm/mm.o
