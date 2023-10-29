@@ -13,6 +13,7 @@
 .globl halt
 
 _start:	
+	bl disable_mmu
 	bl cpu_check 		// we check if we are on the main CPU or not. Otherwise, we just halt
 	bl bss_init 		// initialise bss section
 			

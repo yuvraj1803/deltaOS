@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "misc.h": "c"
+        "misc.h": "c",
+        "timer.h": "c",
+        "paging.h": "c"
     }
 }
