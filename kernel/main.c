@@ -11,9 +11,9 @@ void main(){
 
     __disable_irq();
 
+    uart_init();
     mmu_init();
     heap_init();    
-    uart_init();
     irq_init();
     interrupt_controller_init();
     timer_init();
