@@ -1,4 +1,5 @@
 #include "drivers/timer.h"
+#include "kernel/sched.h"
 #include "mm/mm.h"
 #include "stdio.h"
 
@@ -21,5 +22,5 @@ void system_timer_1_handler(){
 
 	mm_w32(TIMER_C1,  mm_r32(TIMER_CLO) + timer_interval);
 	mm_w32(TIMER_CS, TIMER_CS_M1);
-	// scheduler_tick();
+	scheduler_tick();
 }
