@@ -12,8 +12,4 @@ void enable_mmu();
 void disable_mmu();
 void prepare_page_tables_and_map_memory(uint64_t __page_dir_start);
 
-struct virtual_address_space{
-    uint64_t* lv1_table;
-};
-
 #endif

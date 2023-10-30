@@ -9,6 +9,7 @@
 #define __config_h__
 
 #define CONFIG_SCHED_QUANTA     100         // in milliseconds
+#define CONFIG_MAX_KTHREADS     64
 
 #define EL1_STACK_BASE		0x80000 - 0x1
 

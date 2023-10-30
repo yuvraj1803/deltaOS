@@ -3,7 +3,7 @@
 #define EL1     1
 #define EL0     0
 
-.macro kernel_entry, el
+.macro kernel_entry
     // we pull back sp by 8*34 addresses because 34 registers needs to be pushed
     sub sp, sp, #8*34
     stp x0, x1, [sp, #16 * 0]
@@ -22,27 +22,16 @@
     stp x26, x27, [sp, #16 * 13]
     stp x28, x29, [sp, #16 * 14]
 
-    // since EL0 uses a different SP, ie. SP_EL0, we need to consider that while storing into pt_regs
-    // otherwise we will lose SP_EL0.
-    .if \el == 0
-    mrs x21, sp_el0
-    .else
     add x21, sp, #8*34
-    .endif
-
     mrs x22, elr_el1
     mrs x23, spsr_el1
     stp x30, x21, [sp, #16 * 15]
     stp x22, x23, [sp, #16 * 16]
 .endm
 
-.macro kernel_exit, el
+.macro kernel_exit
     ldp x30, x21, [sp, #16 * 15]
     ldp x22, x23, [sp, #16 * 16]
-
-    .if \el == 0
-    msr sp_el0, x21
-    .endif
 
     msr elr_el1, x22
     msr spsr_el1, x23
@@ -65,8 +54,8 @@
     eret
 .endm
 
-.macro handle_unsupported_interrupt el, interrupt_type
-	kernel_entry \el
+.macro handle_unsupported_interrupt interrupt_type
+	kernel_entry
 	mov x0, #\interrupt_type
 	mrs x1, esr_el1
 	mrs x2, elr_el1
@@ -80,13 +69,14 @@
     b \handler
 .endm
 
-.macro handle_irq_interrupt el
-	kernel_entry \el
+.macro handle_irq_interrupt
+	kernel_entry
 	bl handle_irq
-	kernel_exit \el
+	kernel_exit
 .endm
 
-.macro handle_sync_interrupt el // This interrupt will always come from EL0, so there is no point of having 'el' arg.
+/*
+.macro handle_sync_interrupt    // This interrupt will always come from EL0, so there is no point of having 'el' arg.
                                 // I have added it just to make it more readable.
 	kernel_entry \el
     mrs x0, esr_el1
@@ -96,6 +86,7 @@
 	bl handle_sync
 	kernel_exit \el
 .endm
+*/
 
 .align 11
 .globl vtable
@@ -121,40 +112,40 @@ vtable:
 	ventry lower_el_a32_serror
 
  current_el_sp0_sync:
- 	handle_unsupported_interrupt EL1, CURRENT_EL_SP0_SYNC 	
+ 	handle_unsupported_interrupt  CURRENT_EL_SP0_SYNC 	
  current_el_sp0_irq:
-  	handle_unsupported_interrupt EL1, CURRENT_EL_SP0_IRQ
+  	handle_unsupported_interrupt  CURRENT_EL_SP0_IRQ
  current_el_sp0_fiq:
-  	handle_unsupported_interrupt EL1, CURRENT_EL_SP0_FIQ
+  	handle_unsupported_interrupt  CURRENT_EL_SP0_FIQ
  current_el_sp0_serror:
-  	handle_unsupported_interrupt EL1, CURRENT_EL_SP0_SERROR
+  	handle_unsupported_interrupt  CURRENT_EL_SP0_SERROR
 
  current_el_spx_sync:
-  	handle_unsupported_interrupt EL1, CURRENT_EL_SPX_SYNC
+  	handle_unsupported_interrupt  CURRENT_EL_SPX_SYNC
  current_el_spx_irq:
-  	handle_irq_interrupt EL1
+  	handle_irq_interrupt
  current_el_spx_fiq:
-  	handle_unsupported_interrupt EL1, CURRENT_EL_SPX_FIQ
+  	handle_unsupported_interrupt  CURRENT_EL_SPX_FIQ
  current_el_spx_serror:
-  	handle_unsupported_interrupt EL1, CURRENT_EL_SPX_SERROR
+  	handle_unsupported_interrupt  CURRENT_EL_SPX_SERROR
 
  lower_el_a64_sync:
-  	handle_sync_interrupt EL0
+  	handle_unsupported_interrupt  LOWER_EL_A64_SYNC
  lower_el_a64_irq:
-  	handle_irq_interrupt EL0
+  	handle_unsupported_interrupt  LOWER_EL_A64_IRQ
  lower_el_a64_fiq:
-  	handle_unsupported_interrupt EL0, LOWER_EL_A64_FIQ
+  	handle_unsupported_interrupt  LOWER_EL_A64_FIQ
  lower_el_a64_serror:
-  	handle_unsupported_interrupt EL0, LOWER_EL_A64_SERROR
+  	handle_unsupported_interrupt  LOWER_EL_A64_SERROR
 
  lower_el_a32_sync:
-  	handle_unsupported_interrupt EL0, LOWER_EL_A32_SYNC
+  	handle_unsupported_interrupt  LOWER_EL_A32_SYNC
  lower_el_a32_irq:
-  	handle_unsupported_interrupt EL0, LOWER_EL_A32_IRQ
+  	handle_unsupported_interrupt  LOWER_EL_A32_IRQ
  lower_el_a32_fiq:
-  	handle_unsupported_interrupt EL0, LOWER_EL_A32_FIQ
+  	handle_unsupported_interrupt  LOWER_EL_A32_FIQ
  lower_el_a32_serror:
-  	handle_unsupported_interrupt EL0, LOWER_EL_A32_SERROR
+  	handle_unsupported_interrupt  LOWER_EL_A32_SERROR
 
 
 
