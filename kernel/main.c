@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "kernel/misc.h"
 #include "kernel/irq.h"
+#include "kernel/sched.h"
 #include "mm/mm.h"
 #include "mm/paging.h"
 
@@ -16,8 +17,13 @@ void main(){
     irq_init();
     interrupt_controller_init();
     timer_init();
+    sched_init();
     
     printf("hello threre!");
 
-    while(1);
+    while(1){
+        __disable_irq();
+        schedule();
+        __enable_irq();
+    }
 }
