@@ -1,5 +1,6 @@
 INC = ./include 
-LIB = ./lib/include ./deltaSSE
+LIB = ./lib/include
+SSE = ./deltaSSE
 TOOLCHAIN=aarch64-linux-gnu-
 CC = 		$(TOOLCHAIN)gcc
 AS = 		$(TOOLCHAIN)as
@@ -7,7 +8,7 @@ LD = 		$(TOOLCHAIN)ld
 OBJCOPY = 	$(TOOLCHAIN)objcopy
 OBJDUMP = 	$(TOOLCHAIN)objdump
 
-CFLAGS = -g -ffreestanding -nostdlib -nostartfiles -Wall -I$(INC) -I$(LIB) -mgeneral-regs-only
+CFLAGS = -g -ffreestanding -nostdlib -nostartfiles -Wall -I$(INC) -I$(LIB) -I$(SSE) -mgeneral-regs-only
 ASMFLAGS = -g -I$(INC)
 
 OBJ += ./build/boot/boot.S.o
@@ -21,7 +22,6 @@ OBJ += ./build/kernel/kthread.o
 OBJ += ./build/kernel/sched.o
 OBJ += ./build/drivers/uart.o
 OBJ += ./build/drivers/timer.o
-OBJ += ./build/deltaSSE/sse.o
 OBJ += ./build/deltaSSE/sse.S.o
 OBJ += ./build/mm/mm.o
 OBJ += ./build/mm/mm.S.o
@@ -31,6 +31,7 @@ OBJ += ./build/lib/memory.o
 OBJ += ./build/lib/stdio.o
 OBJ += ./build/lib/stdlib.o
 OBJ += ./build/lib/string.o
+OBJ += ./build/shell/shell.o
 
 .PHONY: all
 all: kernel8.img
@@ -61,11 +62,12 @@ all: kernel8.img
 ./build/shell/%.o : ./shell/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./build/deltaSSE/%.o : ./deltaSSE/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 ./build/deltaSSE/%.S.o: ./deltaSSE/%.S
 	$(CC) $(ASMFLAGS) -c $< -o $@	
+
+./build/shell/%.o: ./shell/%.c
+	$(CC) $(CFLAGS) -c $< -o $@	
+
 
 kernel8.img : $(OBJ)
 	$(LD) -T linker.ld -o ./deltaOS.elf $(OBJ_C) $(OBJ)

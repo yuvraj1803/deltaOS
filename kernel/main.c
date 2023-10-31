@@ -6,6 +6,8 @@
 #include "kernel/sched.h"
 #include "mm/mm.h"
 #include "mm/paging.h"
+#include "shell/shell.h"
+#include "sse.h"
 
 void main(){
 
@@ -17,8 +19,9 @@ void main(){
     irq_init();
     interrupt_controller_init();
     timer_init();
-    
+    shell_init();
 
-    while(1);
+
+    while(1) shell_run();
 
 }

@@ -10,7 +10,7 @@
 
 #define CONFIG_SCHED_QUANTA     100         // in milliseconds
 #define CONFIG_MAX_KTHREADS     64
-
+#define CONFIF_MAX_SHELL_CMDS   128
 #define EL1_STACK_BASE		0x80000 - 0x1
 
 #define EL1_SCTLR_NO_MMU		0
