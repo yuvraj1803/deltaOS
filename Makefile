@@ -1,5 +1,5 @@
-INC = ./include
-LIB = ./lib/include
+INC = ./include 
+LIB = ./lib/include ./deltaSSE
 TOOLCHAIN=aarch64-linux-gnu-
 CC = 		$(TOOLCHAIN)gcc
 AS = 		$(TOOLCHAIN)as
@@ -21,6 +21,8 @@ OBJ += ./build/kernel/kthread.o
 OBJ += ./build/kernel/sched.o
 OBJ += ./build/drivers/uart.o
 OBJ += ./build/drivers/timer.o
+OBJ += ./build/deltaSSE/sse.o
+OBJ += ./build/deltaSSE/sse.S.o
 OBJ += ./build/mm/mm.o
 OBJ += ./build/mm/mm.S.o
 OBJ += ./build/mm/paging.S.o
@@ -58,6 +60,12 @@ all: kernel8.img
 	$(CC) $(CFLAGS) -c $< -o $@
 ./build/shell/%.o : ./shell/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+./build/deltaSSE/%.o : ./deltaSSE/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+./build/deltaSSE/%.S.o: ./deltaSSE/%.S
+	$(CC) $(ASMFLAGS) -c $< -o $@	
 
 kernel8.img : $(OBJ)
 	$(LD) -T linker.ld -o ./deltaOS.elf $(OBJ_C) $(OBJ)
