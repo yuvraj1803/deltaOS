@@ -1,8 +1,5 @@
 #include "kernel/exceptions.h"
 
-#define EL1     1
-#define EL0     0
-
 .macro kernel_entry
     // we pull back sp by 8*34 addresses because 34 registers needs to be pushed
     sub sp, sp, #8*34
@@ -51,11 +48,11 @@
     ldp x26, x27, [sp, #16 * 13]
     ldp x28, x29, [sp, #16 * 14]
     add sp, sp, #8*34
-    eret
+    ret
 .endm
 
 .macro handle_unsupported_interrupt interrupt_type
-	kernel_entry
+//	kernel_entry
 	mov x0, #\interrupt_type
 	mrs x1, esr_el1
 	mrs x2, elr_el1
@@ -70,9 +67,9 @@
 .endm
 
 .macro handle_irq_interrupt
-	kernel_entry
+//	kernel_entry
 	bl handle_irq
-	kernel_exit
+//	kernel_exit
 .endm
 
 /*
