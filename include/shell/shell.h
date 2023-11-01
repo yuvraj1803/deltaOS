@@ -9,7 +9,7 @@ struct shell_command{
 };
 
 struct shell{
-    struct shell_command* commands[CONFIF_MAX_SHELL_CMDS];
+    struct shell_command* commands[CONFIG_MAX_SHELL_CMDS];
 };
 
 void shell_init();

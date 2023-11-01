@@ -1,10 +1,13 @@
 #include "shell/shell.h"
 #include "stdio.h"
 #include "string.h"
+#include "stdlib.h"
 #include <stdint.h>
 #include "memory.h"
 #include "mm/mm.h"  
 #include "config.h"
+#include "sse.h"
+#include "kernel/misc.h"
 
 
 struct shell* current_shell;
@@ -12,13 +15,13 @@ int total_shell_commands;
 
 // ======================================================= Shell Command Handler Prototypes ========================================================================== //
 
-void sse();
+void sse_handler();
 
 // =================================================================================================================================================================== //
 
 
 int8_t add_shell_command(char name[], void* command_handler){
-    if(total_shell_commands == CONFIF_MAX_SHELL_CMDS){
+    if(total_shell_commands == CONFIG_MAX_SHELL_CMDS){
         printf("Max shell commands limit reached. Couldn't add command: %s\n", name);
         return -1;
     }
@@ -37,13 +40,15 @@ void shell_init(){
     current_shell = (struct shell*) malloc(sizeof(struct shell));
 
     total_shell_commands = 0;
-    add_shell_command("sse", &sse);
+    add_shell_command("sse", &sse_handler);
 
 
     log("Shell initialised.");
 }
 
 void shell_run(){
+
+ 
 
     printf(">>> ");
     char input[256];    // i am not checking for buffer overflow here since its a test environment. 
@@ -74,7 +79,13 @@ void sse_fseek_handler();
 void sse_rewind_handler();
 void sse_fclose_handler();
 
-void sse(){
+void sse_handler(){
+
+   if(get_current_el() == 2){
+        printf("sse not supported. OS not running under hypervisor.\n");
+        return;
+    }
+
     printf("Choose SSE operation:\n");
     printf("1. sse_fopen\n");
     printf("2. sse_fread\n");
@@ -114,20 +125,110 @@ void sse(){
 }
 
 void sse_fopen_handler(){
+    printf("File Path: ");
+    char path[256];
+    gets(path);
+
+    printf("Mode (R/W): ");
+    char* mode;
+    gets(mode);
+
+    int hv_response = sse_fopen((const char*) path, (const char*)&mode);
+
+    if(hv_response >= 0) printf("%s opened.\n", path);
+    else printf("File couldn't be opened.\n");
 
 }
 void sse_fread_handler(){
+    printf("Enter file descriptor: ");
+    char fdstr[10];
+    gets(fdstr);
+    int fd = stoi(fdstr);
+
+    printf("Enter number of bytes to read: ");
+    char bytesstr[10];
+    gets(bytesstr);
+    int bytes = stoi(bytesstr);
+
+    char buffer[1024];
+
+    int hv_response = sse_fread(buffer, bytes, 1, fd);
+
+    if(hv_response >= 0){
+        printf("%s\n", buffer);
+    }else{
+        printf("Couldn't read file.\n");
+    }
 
 }
 void sse_fwrite_handler(){
+    printf("Enter file descriptor: ");
+    char fdstr[10];
+    gets(fdstr);
+    int fd = stoi(fdstr);
+
+    printf("Enter data to write: ");
+    char buffer[1024];
+    gets(buffer);
+
+    int bytes_entered = strlen(buffer);
+
+    int hv_response = sse_fwrite(buffer, bytes_entered, 1, fd);
+
+    if(hv_response >= 0){
+        printf("Data written.\n");
+    }else{
+        printf("Couldn't write to the file.\n");
+    }
 
 }
 void sse_fseek_handler(){
+    printf("Enter file descriptor: ");
+    char fdstr[10];
+    gets(fdstr);
+    int fd = stoi(fdstr);
+
+    printf("Enter offset: ");
+    char offsetstr[10];
+    gets(offsetstr);
+    int offset = stoi(offsetstr);
+
+    int hv_response = sse_fseek(fd, offset, 0);
+
+    if(hv_response >= 0) printf("Pointer set to offset %d.\n", offset);
+    else{
+        printf("fseek failed.\n");
+    }
 
 }
 void sse_rewind_handler(){
 
+    printf("Enter file descriptor: ");
+    char fdstr[10];
+    gets(fdstr);
+    int fd = stoi(fdstr);
+
+    int hv_response = sse_fseek(fd, 0,0);
+
+    if(hv_response >= 0){
+        printf("Rewind successful.\n");
+    }else{
+        printf("Rewind Failed.\n");
+    }
+
 }
 void sse_fclose_handler(){
+    printf("Enter file descriptor: ");
+    char fdstr[10];
+    gets(fdstr);
+    int fd = stoi(fdstr);
+
+    int hv_response = sse_fclose(fd);
+
+    if(hv_response >= 0){
+        printf("File closed.\n");
+    }else{
+        printf("File couldn't be closed.\n");
+    }
 
 }

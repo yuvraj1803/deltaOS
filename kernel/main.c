@@ -7,7 +7,6 @@
 #include "mm/mm.h"
 #include "mm/paging.h"
 #include "shell/shell.h"
-#include "sse.h"
 
 void main(){
 
