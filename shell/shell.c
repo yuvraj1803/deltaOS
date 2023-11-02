@@ -54,13 +54,16 @@ void shell_run(){
     char input[256];    // i am not checking for buffer overflow here since its a test environment. 
     gets(input);
 
-    for(int command=0 ; command < total_shell_commands ; command++){
+    uint8_t command_found = 0;
+
+    for(int command=0 ; command < total_shell_commands && !command_found; command++){
         if(current_shell->commands[command] != 0 && !strcmp(current_shell->commands[command]->name, input)){
             current_shell->commands[command]->command_handler();
+            command_found = 1;
         }
     }
 
-    printf("command not found.\n");
+    if(!command_found) printf("command not found.\n");
 }
 
 // ======================================================= Shell Command Handlers ========================================================================== //
@@ -93,6 +96,7 @@ void sse_handler(){
     printf("4. sse_fseek\n");
     printf("5. sse_rewind\n");
     printf("6. sse_fclose\n");
+    printf("\n");
 
     int op = getch() - '0';
 
@@ -125,6 +129,9 @@ void sse_handler(){
 }
 
 void sse_fopen_handler(){
+
+    printf("sse_fopen selected.\n");
+
     printf("File Path: ");
     char path[256];
     gets(path);
@@ -140,6 +147,9 @@ void sse_fopen_handler(){
 
 }
 void sse_fread_handler(){
+
+    printf("sse_fread selected.\n");
+
     printf("Enter file descriptor: ");
     char fdstr[10];
     gets(fdstr);
@@ -162,6 +172,9 @@ void sse_fread_handler(){
 
 }
 void sse_fwrite_handler(){
+
+    printf("sse_fwrite selected.\n");
+
     printf("Enter file descriptor: ");
     char fdstr[10];
     gets(fdstr);
@@ -183,6 +196,9 @@ void sse_fwrite_handler(){
 
 }
 void sse_fseek_handler(){
+
+    printf("sse_fseek selected.\n");
+
     printf("Enter file descriptor: ");
     char fdstr[10];
     gets(fdstr);
@@ -203,6 +219,8 @@ void sse_fseek_handler(){
 }
 void sse_rewind_handler(){
 
+    printf("sse_rewind selected.\n");
+
     printf("Enter file descriptor: ");
     char fdstr[10];
     gets(fdstr);
@@ -218,6 +236,9 @@ void sse_rewind_handler(){
 
 }
 void sse_fclose_handler(){
+
+    printf("sse_fclose selected.\n");
+
     printf("Enter file descriptor: ");
     char fdstr[10];
     gets(fdstr);
