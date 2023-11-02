@@ -50,7 +50,7 @@ void shell_run(){
 
  
 
-    printf(">>> ");
+    printf("deltaOS >>> ");
     char input[256];    // i am not checking for buffer overflow here since its a test environment. 
     gets(input);
 
