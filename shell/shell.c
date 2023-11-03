@@ -68,19 +68,11 @@ void shell_run(){
 
 // ======================================================= Shell Command Handlers ========================================================================== //
 
-#define SSE_OPERATION_FOPEN         1
-#define SSE_OPERATION_FREAD         2
-#define SSE_OPERATION_FWRITE        3
-#define SSE_OPERATION_FSEEK         4
-#define SSE_OPERATION_REWIND        5
-#define SSE_OPERATION_FCLOSE        6
+#define SSE_OPERATION_FREAD         1
+#define SSE_OPERATION_FWRITE        2
 
-void sse_fopen_handler();
 void sse_fread_handler();
 void sse_fwrite_handler();
-void sse_fseek_handler();
-void sse_rewind_handler();
-void sse_fclose_handler();
 
 void sse_handler(){
    if(get_current_el() == 2){
@@ -88,37 +80,21 @@ void sse_handler(){
         return;
     }
     printf("Choose SSE operation:\n");
-    printf("1. sse_fopen\n");
-    printf("2. sse_fread\n");
-    printf("3. sse_fwrite\n");
-    printf("4. sse_fseek\n");
-    printf("5. sse_rewind\n");
-    printf("6. sse_fclose\n");
+    printf("1. sse_fread\n");
+    printf("2. sse_fwrite\n");
     printf("\n");
 
     printf("--->");
     int op = getch() - '0';
 
-    if(op >= 1 && op <= 6){
+    if(op >= 1 && op <= 2){
         switch (op){
             case 1:
-                sse_fopen_handler();
-                break;
-            case 2:
                 sse_fread_handler();
                 break;
-            case 3:
+            case 2:
                 sse_fwrite_handler();
                 break;
-            case 4:
-                sse_fseek_handler();
-                break;
-            case 5:
-                sse_rewind_handler();
-                break;
-            case 6:
-                sse_fclose_handler();
-                break;    
         }
     }else{
         printf("Invalid SSE operation.\n");
@@ -126,30 +102,11 @@ void sse_handler(){
     }
 
 }
-
-void sse_fopen_handler(){
-
-    printf("sse_fopen selected.\n");
-
-    printf("File Path: ");
-    char path[256];
-    gets(path);
-
-    printf("Mode (R/W): ");
-    char mode[1];
-    gets(mode);
-
-    int hv_response = sse_fopen((const char*) path, (const char*)&mode);
-
-    if(hv_response >= 0) printf("%s opened.\n", path);
-    else printf("File couldn't be opened.\n");
-
-}
 void sse_fread_handler(){
 
     printf("sse_fread selected.\n");
 
-    printf("Enter file descriptor: ");
+    printf("Enter filename: ");
     char fdstr[10];
     gets(fdstr);
     int fd = stoi(fdstr);
@@ -174,7 +131,7 @@ void sse_fwrite_handler(){
 
     printf("sse_fwrite selected.\n");
 
-    printf("Enter file descriptor: ");
+    printf("Enter filename: ");
     char fdstr[10];
     gets(fdstr);
     int fd = stoi(fdstr);
@@ -191,64 +148,6 @@ void sse_fwrite_handler(){
         printf("Data written.\n");
     }else{
         printf("Couldn't write to the file.\n");
-    }
-
-}
-void sse_fseek_handler(){
-
-    printf("sse_fseek selected.\n");
-
-    printf("Enter file descriptor: ");
-    char fdstr[10];
-    gets(fdstr);
-    int fd = stoi(fdstr);
-
-    printf("Enter offset: ");
-    char offsetstr[10];
-    gets(offsetstr);
-    int offset = stoi(offsetstr);
-
-    int hv_response = sse_fseek(fd, offset, 0);
-
-    if(hv_response >= 0) printf("Pointer set to offset %d.\n", offset);
-    else{
-        printf("fseek failed.\n");
-    }
-
-}
-void sse_rewind_handler(){
-
-    printf("sse_rewind selected.\n");
-
-    printf("Enter file descriptor: ");
-    char fdstr[10];
-    gets(fdstr);
-    int fd = stoi(fdstr);
-
-    int hv_response = sse_fseek(fd, 0,0);
-
-    if(hv_response >= 0){
-        printf("Rewind successful.\n");
-    }else{
-        printf("Rewind Failed.\n");
-    }
-
-}
-void sse_fclose_handler(){
-
-    printf("sse_fclose selected.\n");
-
-    printf("Enter file descriptor: ");
-    char fdstr[10];
-    gets(fdstr);
-    int fd = stoi(fdstr);
-
-    int hv_response = sse_fclose(fd);
-
-    if(hv_response >= 0){
-        printf("File closed.\n");
-    }else{
-        printf("File couldn't be closed.\n");
     }
 
 }
