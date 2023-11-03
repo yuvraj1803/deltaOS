@@ -107,9 +107,8 @@ void sse_fread_handler(){
     printf("sse_fread selected.\n");
 
     printf("Enter filename: ");
-    char fdstr[10];
-    gets(fdstr);
-    int fd = stoi(fdstr);
+    char filename[128];
+    gets(filename);
 
     printf("Enter number of bytes to read: ");
     char bytesstr[10];
@@ -118,7 +117,7 @@ void sse_fread_handler(){
 
     char buffer[1024];
 
-    int hv_response = sse_fread(buffer, bytes, 1, fd);
+    int hv_response = sse_fread(filename, buffer, bytes);
 
     if(hv_response >= 0){
         printf("%s\n", buffer);
@@ -132,9 +131,8 @@ void sse_fwrite_handler(){
     printf("sse_fwrite selected.\n");
 
     printf("Enter filename: ");
-    char fdstr[10];
-    gets(fdstr);
-    int fd = stoi(fdstr);
+    char filename[128];
+    gets(filename);
 
     printf("Enter data to write: ");
     char buffer[1024];
@@ -142,7 +140,7 @@ void sse_fwrite_handler(){
 
     int bytes_entered = strlen(buffer);
 
-    int hv_response = sse_fwrite(buffer, bytes_entered, 1, fd);
+    int hv_response = sse_fwrite(filename, buffer, bytes_entered);
 
     if(hv_response >= 0){
         printf("Data written.\n");
