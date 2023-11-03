@@ -83,12 +83,10 @@ void sse_rewind_handler();
 void sse_fclose_handler();
 
 void sse_handler(){
-
    if(get_current_el() == 2){
         printf("sse not supported. OS not running under hypervisor.\n");
         return;
     }
-
     printf("Choose SSE operation:\n");
     printf("1. sse_fopen\n");
     printf("2. sse_fread\n");
@@ -137,7 +135,7 @@ void sse_fopen_handler(){
     gets(path);
 
     printf("Mode (R/W): ");
-    char* mode;
+    char mode[1];
     gets(mode);
 
     int hv_response = sse_fopen((const char*) path, (const char*)&mode);
