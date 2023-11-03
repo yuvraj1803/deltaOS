@@ -96,6 +96,7 @@ void sse_handler(){
     printf("6. sse_fclose\n");
     printf("\n");
 
+    printf("--->");
     int op = getch() - '0';
 
     if(op >= 1 && op <= 6){
