@@ -1,7 +1,7 @@
 INC = ./include 
 LIB = ./lib/include
 SSE = ./deltaSSE
-TOOLCHAIN=aarch64-linux-gnu-
+TOOLCHAIN=@aarch64-linux-gnu-
 CC = 		$(TOOLCHAIN)gcc
 AS = 		$(TOOLCHAIN)as
 LD = 		$(TOOLCHAIN)ld
@@ -37,35 +37,46 @@ OBJ += ./build/shell/shell.o
 all: kernel8.img
 
 ./build/kernel/%.o: ./kernel/%.c
+	@echo [compiling] $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/mm/%.o: ./mm/%.c
+	@echo [compiling] $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/boot/%.S.o: ./boot/%.S
+	@echo [compiling] $@
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
 ./build/kernel/%.S.o : ./kernel/%.S
+	@echo [compiling] $@
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
 ./build/mm/%.S.o: ./mm/%.S
+	@echo [compiling] $@
 	$(CC) $(ASMFLAGS) -c $< -o $@	
 
 ./build/drivers/%.o: ./drivers/%.c
+	@echo [compiling] $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/fs/%.o: ./fs/%.c
+	@echo [compiling] $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/lib/%.o: ./lib/src/%.c
+	@echo [compiling] $@
 	$(CC) $(CFLAGS) -c $< -o $@
 ./build/shell/%.o : ./shell/%.c
+	@echo [compiling] $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/deltaSSE/%.S.o: ./deltaSSE/%.S
+	@echo [compiling] $@
 	$(CC) $(ASMFLAGS) -c $< -o $@	
 
 ./build/shell/%.o: ./shell/%.c
+	@echo [compiling] $@
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 
