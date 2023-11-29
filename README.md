@@ -1,6 +1,6 @@
 # deltaOS
 deltaOS is a kernel written for microcontrollers with ARMv8-A processors. 
-
+This kernel is written to experiment with deltaSSE. Hence we never jump to EL0 and run the shell in EL1 directly to avoid over complication.
  # Shell Commands
    + sse - this command wont run on baremetal OS. Only supported when running under deltaV or any other hypervisor that supports deltaSSE.
 
