@@ -8,6 +8,7 @@
 #include "config.h"
 #include "sse.h"
 #include "kernel/misc.h"
+#include "omegaCOM/omegaCOM.h"
 
 
 struct shell* current_shell;
@@ -16,6 +17,7 @@ int total_shell_commands;
 // ======================================================= Shell Command Handler Prototypes ========================================================================== //
 
 void sse_handler();
+void ocom_handler();
 
 // =================================================================================================================================================================== //
 
@@ -41,6 +43,7 @@ void shell_init(){
 
     total_shell_commands = 0;
     add_shell_command("sse", &sse_handler);
+    add_shell_command("ocom", &ocom_handler);
 
 
     log("Shell initialised.");
@@ -147,5 +150,120 @@ void sse_fwrite_handler(){
     }else{
         printf("Couldn't write to the file.\n");
     }
+
+}
+
+
+//================================================OMEGA COM (ocom command) Handlers ==================================================
+
+void ocom_store_handler();
+void ocom_load_handler();
+
+void ocom_handler(){
+    printf("Choose OCOM operation:\n");
+    printf("1. ocom_store_page\n");
+    printf("2. ocom_load_page\n");
+    printf("\n");
+
+    printf("--->");
+    int op = getch() - '0';
+
+    if(op >= 1 && op <= 2){
+        switch (op){
+            case 1:
+                ocom_store_handler();
+                break;
+            case 2:
+                ocom_load_handler();
+                break;
+        }
+    }else{
+        printf("Invalid OCOM operation.\n");
+        return;       
+    }
+}
+
+void ocom_store_handler(){
+
+    printf("Enter Key (unique number to identify page): ");
+    char _key[10];
+    gets(_key);
+
+    int key = stoi(_key);
+
+    printf("Enter page's base address (page aligned): ");
+    char _addr[20];
+    gets(_addr);
+
+    int addr;
+
+    if(_addr[1] == 'x'){    // if the address entered is in hex format.
+        addr = hex_to_dec(_addr);
+    }else{
+        addr = stoi(_addr);
+    }
+
+
+    // if the given address is out of the RAM or not page aligned, we exit.
+    if(addr < 0 || addr >= 0x40000000 || (addr & ~(PAGE_SIZE))){
+        printf("Invalid address given.\n");
+        return;
+    }
+
+    int err;
+
+    err = ocom_store_page(key, addr);
+
+    if(err < 0){
+        printf("ocom store failed.\n");
+        return;
+    }
+
+    printf("ocom store success.\n");
+    
+
+    return;
+
+}
+
+void ocom_load_handler(){
+
+    printf("Enter Key (unique number to identify page): ");
+    char _key[10];
+    gets(_key);
+
+    int key = stoi(_key);
+
+    printf("Enter destination page's base address (page aligned): ");
+    char _addr[20];
+    gets(_addr);
+
+    int addr;
+
+    if(_addr[1] == 'x'){    // if the address entered is in hex format.
+        addr = hex_to_dec(_addr);
+    }else{
+        addr = stoi(_addr);
+    }
+
+    // if the given address is out of the RAM or not page aligned, we exit.
+    if(addr < 0 || addr >= 0x40000000 || (addr & ~(PAGE_SIZE))){
+        printf("Invalid address given.\n");
+        return;
+    }
+
+    int err;
+
+    err = ocom_load_page(key, addr);
+
+    if(err < 0){
+        printf("ocom store failed.\n");
+        return;
+    }
+
+    printf("ocom load success.\n");
+    
+
+    return;
 
 }
