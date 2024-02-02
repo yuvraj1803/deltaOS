@@ -56,8 +56,16 @@ int hex_to_dec(char* num){
 	int res = 0;
 	int exp = 0;
 
-	for(int i=len-1;i>=2;i++){
-		res += (num[i] - '0') * pow(16, exp);
+	for(int i=len-1;i>=2;i--){
+
+		int val;
+
+		if(num[i] >= '0' && num[i] <= '9') val = num[i] - '0';
+		else{
+			val = 10 + num[i] - 'a';
+		}
+
+		res += (val) * pow(16, exp);
 		exp++;
 	}
 

@@ -240,7 +240,7 @@ void ocom_load_handler(){
 
     int addr;
 
-    if(strlen(_maddr) > 2 &&_addr[1] == 'x'){    // if the address entered is in hex format.
+    if(strlen(_addr) > 2 &&_addr[1] == 'x'){    // if the address entered is in hex format.
         addr = hex_to_dec(_addr);
     }else{
         addr = stoi(_addr);
