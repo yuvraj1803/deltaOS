@@ -185,7 +185,7 @@ void ocom_handler(){
 
 void ocom_store_handler(){
 
-    printf("Enter Key (unique number to identify page): ");
+    printf("\nEnter Key (unique number to identify page): ");
     char _key[10];
     gets(_key);
 
@@ -196,8 +196,8 @@ void ocom_store_handler(){
     gets(_addr);
 
     int addr;
-
-    if(_addr[1] == 'x'){    // if the address entered is in hex format.
+    
+    if(strlen(_addr) > 2 &&_addr[1] == 'x'){    // if the address entered is in hex format.
         addr = hex_to_dec(_addr);
     }else{
         addr = stoi(_addr);
@@ -228,7 +228,7 @@ void ocom_store_handler(){
 
 void ocom_load_handler(){
 
-    printf("Enter Key (unique number to identify page): ");
+    printf("\nEnter Key (unique number to identify page): ");
     char _key[10];
     gets(_key);
 
@@ -240,7 +240,7 @@ void ocom_load_handler(){
 
     int addr;
 
-    if(_addr[1] == 'x'){    // if the address entered is in hex format.
+    if(strlen(_maddr) > 2 &&_addr[1] == 'x'){    // if the address entered is in hex format.
         addr = hex_to_dec(_addr);
     }else{
         addr = stoi(_addr);
