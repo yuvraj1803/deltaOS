@@ -23,6 +23,8 @@ OBJ += ./build/kernel/sched.o
 OBJ += ./build/drivers/uart.o
 OBJ += ./build/drivers/timer.o
 OBJ += ./build/deltaSSE/sse.S.o
+OBJ += ./build/omegaCOM/omegaCOM.o
+OBJ += ./build/omegaCOM/omegaCOM.S.o
 OBJ += ./build/mm/mm.o
 OBJ += ./build/mm/mm.S.o
 OBJ += ./build/mm/paging.S.o
@@ -72,6 +74,14 @@ all: kernel8.img
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/deltaSSE/%.S.o: ./deltaSSE/%.S
+	@echo [CC] $@
+	$(CC) $(ASMFLAGS) -c $< -o $@	
+
+./build/omegaCOM/%.S.o: ./omegaCOM/%.S
+	@echo [CC] $@
+	$(CC) $(ASMFLAGS) -c $< -o $@	
+
+./build/omegaCOM/%.o: ./omegaCOM/%.c
 	@echo [CC] $@
 	$(CC) $(ASMFLAGS) -c $< -o $@	
 
