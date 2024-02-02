@@ -10,5 +10,7 @@
 
 char* itoa(int num);
 int stoi(char* str);
+int pow(int a, int b);
+int hex_to_dec(char* num);
 
 #endif
