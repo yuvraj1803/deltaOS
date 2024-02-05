@@ -205,8 +205,8 @@ void ocom_store_handler(){
 
 
     // if the given address is out of the RAM or not page aligned, we exit.
-    if(addr < 0 || addr >= 0x40000000 || (addr & ~(PAGE_SIZE))){
-        printf("Invalid address given.\n");
+    if(addr < 0 || addr >= 0x40000000 || (addr & (PAGE_SIZE-1))){
+        printf("Invalid address given: %d.\n", addr);
         return;
     }
 
@@ -247,8 +247,8 @@ void ocom_load_handler(){
     }
 
     // if the given address is out of the RAM or not page aligned, we exit.
-    if(addr < 0 || addr >= 0x40000000 || (addr & ~(PAGE_SIZE))){
-        printf("Invalid address given.\n");
+    if(addr < 0 || addr >= 0x40000000 || (addr & (PAGE_SIZE-1))){
+        printf("Invalid address given: %d.\n", addr);
         return;
     }
 
