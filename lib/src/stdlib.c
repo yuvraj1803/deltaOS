@@ -49,6 +49,14 @@ int stoi(char* str){
 	return val;
 }
 
+int pow(int a, int b){
+	int ans = 1;
+	while(b--) ans *= a;
+
+
+	return ans;
+}
+
 int hex_to_dec(char* num){
 
 	int len = strlen(num);
