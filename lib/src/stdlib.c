@@ -9,8 +9,18 @@
 #include "string.h"
 #include "mm/mm.h"
 
-char* itoa(int num){
-	    char* num_a = (char*) malloc(15); // assuming max 15 digit number.
+#include "stdlib.h"
+#include "string.h"
+#include "mm/mm.h"
+
+char* itoa(long long num){
+	    char* num_a = (char*) malloc(20); // assuming max 20 digit number.
+
+		if(num == 0){
+			num_a[0] = '0';
+			num_a[1] = '\0';
+			return num_a;
+		}
 
 	    int digits = 0;
 	    int temp = num;
@@ -37,16 +47,6 @@ int stoi(char* str){
 	}
 
 	return val;
-}
-
-int pow(int a, int b){
-	int ans = 1;
-
-	while(b--) ans *= a;
-
-
-	return ans;
-
 }
 
 int hex_to_dec(char* num){
