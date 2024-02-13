@@ -39,54 +39,54 @@ OBJ += ./build/shell/shell.o
 all: kernel8.img
 
 ./build/kernel/%.o: ./kernel/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/mm/%.o: ./mm/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/boot/%.S.o: ./boot/%.S
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
 ./build/kernel/%.S.o : ./kernel/%.S
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
 ./build/mm/%.S.o: ./mm/%.S
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(ASMFLAGS) -c $< -o $@	
 
 ./build/drivers/%.o: ./drivers/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/fs/%.o: ./fs/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/lib/%.o: ./lib/src/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(CFLAGS) -c $< -o $@
 ./build/shell/%.o : ./shell/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./build/deltaSSE/%.S.o: ./deltaSSE/%.S
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(ASMFLAGS) -c $< -o $@	
 
 ./build/omegaCOM/%.S.o: ./omegaCOM/%.S
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(ASMFLAGS) -c $< -o $@	
 
 ./build/omegaCOM/%.o: ./omegaCOM/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(ASMFLAGS) -c $< -o $@	
 
 ./build/shell/%.o: ./shell/%.c
-	@echo [CC] $@
+	@echo CC $@
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 
